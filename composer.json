@@ -1,0 +1,17 @@
+{
+    "name": "heinle/projetofinal",
+    "description": "Cadastro de farm\u0000cias com php + PDO",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "joaosfontoura555",
+            "email": "joaosfontoura555@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "twbs/bootstrap": "^3.4@dev",
+        "components/jquery": "dev-master"
+    }
+}
