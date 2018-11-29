@@ -1,0 +1,18 @@
+body{
+  background-image: url("../img/walp.jpg");
+}
+form{
+  margin-top:20px;
+}
+.section{
+      width: 35%;
+      height: 45%;
+      text-align:center;
+      background: rgba(0, 0, 0, 0.3);
+      color: white;
+
+      /* pura mágica */
+      position: absolute;
+      margin-left: 22%;
+      top: 50%;
+}
