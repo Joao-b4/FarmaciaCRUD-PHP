@@ -4,6 +4,7 @@ sistema interno de farmácia em PHP
 <h1>Novidades:</h1>
 <ul>
   <li>Criado sistema de autenticação.</li>
+  <li>Adicionado Responsividade.</li>
   <li>Controle de usuario.</li>
   <li>Criptrografia em senhas.</li>
   <li>Validações Front-end e Back-end.</li>
