@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Tempo de geração: 29/11/2018 às 18:39
+-- Tempo de geração: 01/12/2018 às 22:23
 -- Versão do servidor: 10.1.34-MariaDB
 -- Versão do PHP: 7.2.8
 
@@ -35,13 +35,6 @@ CREATE TABLE `fornecedores` (
   `telForn` varchar(20) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
---
--- Fazendo dump de dados para tabela `fornecedores`
---
-
-INSERT INTO `fornecedores` (`idForn`, `nomeForn`, `emailForn`, `telForn`) VALUES
-(6, 'Petrobras', 'marcelo@petrobras.com.br', '5551998988282');
-
 -- --------------------------------------------------------
 
 --
@@ -57,13 +50,6 @@ CREATE TABLE `funcionarios` (
   `funcaoFunc` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
   `emailFunc` varchar(50) COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
---
--- Fazendo dump de dados para tabela `funcionarios`
---
-
-INSERT INTO `funcionarios` (`idFunc`, `nomeFunc`, `enderecoFunc`, `rgFunc`, `entradaFunc`, `funcaoFunc`, `emailFunc`) VALUES
-(5, 'joao', 'pesquerio', '929292929', '2220-02-22', 'caixa', 'joaosfontoura555@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -81,12 +67,24 @@ CREATE TABLE `produtos` (
   `dataVali` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+-- --------------------------------------------------------
+
 --
--- Fazendo dump de dados para tabela `produtos`
+-- Estrutura para tabela `user`
 --
 
-INSERT INTO `produtos` (`idProd`, `nomeProd`, `precoProd`, `fabricante`, `tipoProd`, `dataFabri`, `dataVali`) VALUES
-(1, 'Amoxicilina 500 mg', 15.75, 'NeoQuimica', 'Medicamento', '2018-11-01', '2019-03-20');
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `pass` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Fazendo dump de dados para tabela `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `pass`) VALUES
+(27, 'Admin', '82e26c4e03ff2e388bc9da0dadd9844c');
 
 --
 -- Índices de tabelas apagadas
@@ -111,6 +109,12 @@ ALTER TABLE `produtos`
   ADD PRIMARY KEY (`idProd`);
 
 --
+-- Índices de tabela `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT de tabelas apagadas
 --
 
@@ -118,19 +122,25 @@ ALTER TABLE `produtos`
 -- AUTO_INCREMENT de tabela `fornecedores`
 --
 ALTER TABLE `fornecedores`
-  MODIFY `idForn` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `idForn` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de tabela `funcionarios`
 --
 ALTER TABLE `funcionarios`
-  MODIFY `idFunc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idFunc` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `produtos`
 --
 ALTER TABLE `produtos`
-  MODIFY `idProd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idProd` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT de tabela `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

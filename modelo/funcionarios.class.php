@@ -17,10 +17,15 @@ class Funcionarios{
 
   public function __toString(){
     return nl2br("Nome do Funcionário: $this->nomeFunc
+
                   Endereço do Funcionário: $this->enderecoFunc
+
                   RG: $this->rgFunc
+
                   Data de entrada na empresa: $this->entradaFunc
+
                   Função(Cargo): $this->funcaoFunc
+
                   E-Mail do Funcionário: $this->emailFunc");
   }
 }

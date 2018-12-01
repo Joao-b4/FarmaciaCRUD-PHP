@@ -5,8 +5,6 @@ class Fornecedores{
   private $emailForn;
   private $telForn;
 
-
-
   public function __construct(){}
   public function __destruct(){}
 

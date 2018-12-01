@@ -1,6 +1,10 @@
 <?php
 session_start();
-ob_start(); ?>
+ob_start();
+
+include_once 'modelo/usuario.class.php';
+if(isset($_SESSION['privateUser'])){  $log = unserialize($_SESSION['privateUser']);
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -12,21 +16,23 @@ ob_start(); ?>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <link rel="stylesheet" href="./vendor/css/master.css">
-</head>
+
+ </head>
+
   <body>
       <div class="container">
-        <h1 class="jumbotron bg-light">Cadastro de produtos</h1>
+        <h1 class="jumbotron bg-light text-center">Sistema Interno</h1>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg bg-light navbar-info">
           <a class="navbar-brand" href="./index.php">Home</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <button class="navbar-toggler navbar-light" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
 
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   Cadastro
@@ -52,32 +58,40 @@ ob_start(); ?>
                   <a class="dropdown-item" href="consulta-fornecedores.php">Fornecedores</a>
                 </div>
               </li>
-
-
             </ul>
+
+            <ul class="nav navbar-nav navbar-right ml-auto">
+                <li class="nav nav-item">
+                    <a class="nav-link" href='cadastro-user.php'><i class="fas fa-user"></i> New User</a>
+                </li>
+                <li class="nav nav-item">
+                    <a class="nav-link" href='config-user.php?name=<?php echo $log->username;?>'><i class="fas fa-users-cog"></i> Config</a>
+                </li>
+            </ul>
+
           </div>
         </nav>
 
         <form name="cadfarm" method="post" class="formC" action="">
           <div class="form-group">
-            <input type="text" name="txtnomeprod" placeholder="Nome do Produto" class="form-control">
+            <input type="text" name="txtnomeprod" pattern="^[a-zA-ZÁ-ù0-9 ]{2,50}$" placeholder="Nome do Produto" class="form-control">
           </div>
           <div class="form-group">
-            <input type="number" min="0"  name="numberpreco" placeholder="Preço" step="0.01" class="form-control">
+            <input type="number" min="0" pattern="^[.0-9 ]{2,10}$" name="numberpreco" placeholder="Preço" step="0.01" class="form-control">
           </div>
           <div class="form-group">
-            <input type="text"  name="txtfabricante" placeholder="Fabricante"  class="form-control">
+            <input type="text"  name="txtfabricante" pattern="^[a-zA-ZÁ-ù0-9 ]{2,50}$" placeholder="Fabricante"  class="form-control">
           </div>
           <div class="form-group">
-            <input type="text" name="txttipoprod" placeholder="Tipo de produto" class="form-control">
+            <input type="text" name="txttipoprod" pattern="^[a-zA-ZÁ-ù0-9 ]{2,50}$" placeholder="Tipo de produto" class="form-control">
           </div>
           <h4>Data de Fabricação</h4>
           <div class="form-group">
-            <input type="date" name="txtdatafabri" placeholder="Data de Fabricação" class="form-control">
+            <input type="date" name="txtdatafabri" pattern="^[0-9\/-]{1,10}$" placeholder="Data de Fabricação" class="form-control">
           </div>
           <h4>Data de Validade</h4>
           <div class="form-group">
-            <input type="date" name="txtdatavali" placeholder="Data de Validade" class="form-control">
+            <input type="date" name="txtdatavali"  pattern="^[0-9\/-]{1,10}$" placeholder="Data de Validade" class="form-control">
           </div>
 
           <div class="form-group">
@@ -95,25 +109,66 @@ ob_start(); ?>
           include_once "modelo/farmacia.class.php";
           include_once "dao/farmaciadao.class.php";
           include_once "util/padronizacao.class.php";
+          include_once "util/validacao.class.php";
 
+          //entrada
+          $nomeProd =   ($_POST['txtnomeprod']);
+          $precoProd =  ($_POST['numberpreco']);
+          $fabricante = ($_POST['txtfabricante']);
+          $tipoProd =   ($_POST['txttipoprod']);
+          $dataFabri =  ($_POST['txtdatafabri']);
+          $dataVali =     ($_POST['txtdatavali']);
+
+          $err = array();
+
+          if(!Validacao::validarName($nomeProd)){
+              $err[] = "<span class='alert alert-danger'>Erro no Produto</span>";
+          }
+          if(!Validacao::validarPreco($precoProd)) {
+              $err[] = "<span class='alert alert-danger'>Erro no Preço</span>";
+          }
+          if(!Validacao::validarName($fabricante)) {
+              $err[] = "<span class='alert alert-danger'>Erro no Fabricante!</span>";
+          }
+          if(!Validacao::validarName($tipoProd)) {
+              $err[] = "<span class='alert alert-danger'>Erro no Tipo!</span>";
+          }
+          if(!Validacao::validarData($dataFabri)) {
+              $err[] = "<span class='alert alert-danger'>Erro na Fabricação! </span>";
+          }
+          if(!Validacao::validarData($dataVali)) {
+              $err[] = "<span class='alert alert-danger'>Erro na Validade!</span>";
+          }
+
+          if(count($err) != 0){ //valida
+              foreach($err as $e){
+                  echo $e."<br><br>";
+              }
+              return 0;
+          }else{
+
+        //modelo
           $prod = new Farmacia();
-          $prod->nomeProd = ($_POST['txtnomeprod']);
-          $prod->precoProd = ($_POST['numberpreco']);
-          $prod->fabricante = ($_POST['txtfabricante']);
-          $prod->tipoProd = ($_POST['txttipoprod']);
-          $prod->dataFabri = ($_POST['txtdatafabri']);
-          $prod->dataVali = ($_POST['txtdatavali']);
-
+          $prod->nomeProd = $nomeProd;
+          $prod->precoProd = $precoProd;
+          $prod->fabricante = $fabricante;
+          $prod->tipoProd = $tipoProd;
+          $prod->dataFabri = $dataFabri;
+          $prod->dataVali = $dataVali;
 
           $farmDAO = new FarmaciaDAO();
           $farmDAO->cadastrarProduto($prod);
 
-          $_SESSION['msg']="Produto cadastrado com sucesso!";
+          $_SESSION['msg']="<br> <span class='alert alert-info'>Produto cadastrado com sucesso!</span> <br>";
           $prod->__destruct();
 
 
         header("location:cadastro-farmacia.php");
-        }
+    }//fecha validacao
+    }//fecha cadastro
+    }else{//fecha if autenticação
+        header('location:index.php');
+    }//fecha else autenticação
           ?>
       </div>
   </body>

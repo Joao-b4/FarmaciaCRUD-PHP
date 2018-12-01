@@ -173,7 +173,7 @@ public function deletarProduto($id){
       }//fecha catch
     }//fecha deletarLivro
 
-    public function alterarFuncionario($func){
+    public function alterarFuncionario($func,$id){
       try{
         $stat = $this->conexao->prepare("update funcionarios set nomeFunc=?, enderecoFunc=?, rgFunc=?, entradaFunc=?, funcaoFunc=?, emailFunc=? where idFunc=?");
         $stat->bindValue(1, $func->nomeFunc);
@@ -182,9 +182,7 @@ public function deletarProduto($id){
         $stat->bindValue(4, $func->entradaFunc);
         $stat->bindValue(5, $func->funcaoFunc);
         $stat->bindValue(6, $func->emailFunc);
-        $stat->bindValue(7, $func->idFunc);
-
-
+        $stat->bindValue(7, $id);
         $stat->execute();
       }catch(PDOException $e){
         echo "Erro ao alterar funcionário! ".$e;
@@ -232,10 +230,7 @@ public function deletarProduto($id){
           $stat->bindValue(1, $forn->nomeForn);
           $stat->bindValue(2, $forn->emailForn);
           $stat->bindValue(3, $forn->telForn);
-          $stat->bindValue(4, $forn->entradaForn);
           $stat->bindValue(4, $forn->idForn);
-
-
           $stat->execute();
         }catch(PDOException $e){
           echo "Erro ao alterar fornecedor! ".$e;
