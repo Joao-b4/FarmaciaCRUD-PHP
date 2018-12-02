@@ -25,7 +25,7 @@ ob_start(); //buffer do PHP
 
   <script language="Javascript">
   function funcao(){
-       var resposta = confirm("Deseja remover esse registro?");
+       var resposta = confirm("Deseja remover sua Conta?");
 
        if (resposta == true) {
             window.location.href = "config-user.php?deletar=1&name=" + '<?php echo $log->username; ?>';
@@ -178,8 +178,8 @@ ob_start(); //buffer do PHP
     }else{
         if($delUser == $log->username){
             $farmDAO->deletarUsuario($delUser);
-            //unset($_SESSION['privateUser']);
-            //header("location:index.php");
+            unset($_SESSION['privateUser']);
+            header("location:index.php");
         }else{
             echo "Invalido.";
         }

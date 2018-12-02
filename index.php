@@ -75,7 +75,7 @@ if(isset($_SESSION['privateUser'])){  $log = unserialize($_SESSION['privateUser'
         </nav>
 
     <div class="section mx-auto shadow-lg text-capitalize container">
-        <div class=" mx-auto">
+        <div class="col-sm-10 mx-auto">
         <?php
             if(isset($_SESSION['privateUser'])){
                 include_once 'modelo/usuario.class.php';
